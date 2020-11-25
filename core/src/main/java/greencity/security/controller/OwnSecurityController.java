@@ -7,6 +7,7 @@ import greencity.security.dto.ownsecurity.OwnRestoreDto;
 import greencity.security.dto.ownsecurity.OwnSignInDto;
 import greencity.security.dto.ownsecurity.OwnSignUpDto;
 import greencity.security.dto.ownsecurity.UpdatePasswordDto;
+import greencity.security.filters.Storage;
 import greencity.security.service.OwnSecurityService;
 import greencity.security.service.PasswordRecoveryService;
 import greencity.security.service.VerifyEmailService;
@@ -90,7 +91,9 @@ public class OwnSecurityController {
     })
     @PostMapping("/signIn")
     public SuccessSignInDto singIn(@Valid @RequestBody OwnSignInDto dto) {
-        return service.signIn(dto);
+        SuccessSignInDto successSignInDto = service.signIn(dto);
+        Storage.put("accessToken", successSignInDto.getAccessToken());
+        return successSignInDto;
     }
 
     /**
